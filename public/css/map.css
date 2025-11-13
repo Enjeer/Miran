@@ -6,7 +6,6 @@
 }
 
 .map{
-    background: url('../media/images/static/map.png');
     height: 100%;
     aspect-ratio: auto;
 }
@@ -35,7 +34,7 @@
     height: 100%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: 1fr 2fr 1fr 1fr;
     grid-column-gap: 50px;
     grid-row-gap: 15px;
 }
@@ -58,5 +57,3 @@
 .second-column img{
     height: 60px;
 }
-
-.second-column
