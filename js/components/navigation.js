@@ -2,10 +2,10 @@ class Navigation {
     constructor(containerId = 'nav-container') {
         this.containerId = containerId;
         this.buttons = [
-            { id: 'btn-stats', icon: '../../media/images/icons/stats.png', text: 'Статистика', route: '/stats' },
-            { id: 'btn-inspect', icon: '../../media/images/icons/glass.png', text: 'Инспекция', route: '/inspect' },
-            { id: 'btn-chat', icon: '../../media/images/icons/chat.png', text: 'Чат', route: '/chat' },
-            { id: 'btn-profile', icon: '../../media/images/icons/profile.png', text: 'Аккаунт', route: '/profile' }
+            { id: 'btn-stats', icon: '/media/images/icons/stats.png', text: 'Статистика', route: '/stats' },
+            { id: 'btn-inspect', icon: '/media/images/icons/glass.png', text: 'Инспекция', route: '/inspect' },
+            { id: 'btn-chat', icon: '/media/images/icons/chat.png', text: 'Чат', route: '/chat' },
+            { id: 'btn-profile', icon: '/media/images/icons/profile.png', text: 'Аккаунт', route: '/profile' }
         ];
     }
     
