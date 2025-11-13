@@ -1,0 +1,16 @@
+.map-container{
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+    position: relative;
+}
+
+.map{
+    background: url('../media/images/static/map.png');
+    height: 100%;
+    aspect-ratio: auto;
+}
+
+.map img{
+    height: 100%;
+}

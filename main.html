@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIB - Главная</title>
+    <meta name="theme-color" content="#515558">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components/navigation.css">
+</head>
+<body class="main-page">
+    <div class="main-container">
+        <header class="main-header">
+            <div class="header-content">
+                <div class="app-logo">
+                    <h1>PIB</h1>
+                </div>
+                <div class="notifications-header">
+                    <h2>Уведомления</h2>
+                    <img src="/media/images/icons/notifications-passive.png" alt="">
+                </div>
+            </div>
+        </header>
+        <main class="main-content">
+            <section class="notifications">
+                <div class="notification">
+                    <p class="notification-inner">55.05.2025 (Завтра) Вы назначены на “отделение, место” в качестве проверяющего.
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown</p>
+                    <div class="buttons">
+                        <button class="primary-btn btn">Назначить встречу</button>
+                        <button class="secondary-btn btn">Не смогу</button>
+                    </div>
+                </div>
+                <div class="notification">
+                    <p class="notification-inner">55.05.2025 (Завтра) Вы назначены на “отделение, место” в качестве проверяющего.
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown</p>
+                    <div class="buttons">
+                        <button class="primary-btn btn">Назначить встречу</button>
+                        <button class="secondary-btn btn">Не смогу</button>
+                    </div>
+                </div>
+                <div class="notification">
+                    <p class="notification-inner">55.05.2025 (Завтра) Вы назначены на “отделение, место” в качестве проверяющего.
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown</p>
+                    <div class="buttons">
+                        <button class="primary-btn btn">Назначить встречу</button>
+                        <button class="secondary-btn btn">Не смогу</button>
+                    </div>
+                </div>
+                <div class="notification">
+                    <p class="notification-inner">55.05.2025 (Завтра) Вы назначены на “отделение, место” в качестве проверяющего.
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown</p>
+                    <div class="buttons">
+                        <button class="primary-btn btn">Назначить встречу</button>
+                        <button class="secondary-btn btn">Не смогу</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <div id="nav-container"></div>
+    </div>
+
+    <script src="js/router.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/components/Navigation.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Теперь класс Navigation доступен глобально
+        const nav = new Navigation();
+        nav.render();
+        nav.setCurrentActive();
+    });
+    </script>
+</body>
+</html>

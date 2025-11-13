@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIB</title>
+    <meta name="theme-color" content="#515558">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <section class="loader-section">
+        <div class="naming">
+            <h1 class="loader-title">PIB</h1>
+            <span class="loader-subtitle">Production Inspection Bot</span>
+        </div>
+        <div class="start-button" id="startButton">
+            <img src="/media/images/icons/touch-gesture-svgrepo-com.svg" alt="start">
+            <span>начать работу</span>
+        </div>
+    </section>
+
+    <!-- Кнопка установки PWA -->
+    <div id="installButton" class="install-btn" style="display: none;">
+        <button onclick="installPWA()">📱 Установить приложение</button>
+    </div>
+
+    <script src="js/router.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
