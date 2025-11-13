@@ -3,12 +3,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const sections = document.querySelectorAll('.section');
     const pinpoint = document.querySelector('.pinpoint');
     const mapContainer = document.querySelector('.map');
-    const mapContent = document.querySelector('.map-blocks');
 
-    // 📌 Полная блокировка выделения и масштабирования
+    // 📌 Предотвращаем выделение текста и масштабирование
     document.body.style.userSelect = 'none';
-    document.body.style.webkitUserSelect = 'none';
     document.body.style.touchAction = 'none';
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('gesturestart', e => e.preventDefault());
+
+    // --- PWA ---
+    let deferredPrompt;
+    const installBtnContainer = document.getElementById('installButton');
+    if (installBtnContainer) {
+        const installBtn = installBtnContainer.querySelector('button');
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtnContainer.style.display = 'block';
+        });
+        installBtn.addEventListener('click', async () => {
+            installBtnContainer.style.display = 'none';
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                await deferredPrompt.userChoice;
+                deferredPrompt = null;
+            }
+        });
+    }
 
     // --- Previous Page ---
     let previousPage = document.referrer || '/main.html';
@@ -16,13 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Map State ---
     const mapState = { pinpointX: null, pinpointY: null, time: '' };
 
+    // --- Pinpoint Setup ---
     const loadPinpoint = () => {
         const saved = JSON.parse(sessionStorage.getItem('mapState'));
         if (saved) Object.assign(mapState, saved);
 
         if (mapState.pinpointX === null || mapState.pinpointY === null) {
-            // центр по всей карте
-            const rect = mapContent.getBoundingClientRect();
+            // Если нет позиции, ставим в центр
+            const rect = mapContainer.getBoundingClientRect();
             pinpoint.style.left = rect.width / 2 - pinpoint.offsetWidth / 2 + 'px';
             pinpoint.style.top = rect.height / 2 - pinpoint.offsetHeight / 2 + 'px';
         } else {
@@ -41,14 +62,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Grid Overlay ---
     const gridCanvas = document.createElement('canvas');
-    gridCanvas.classList.add('grid-overlay');
-    mapContent.appendChild(gridCanvas);
+    gridCanvas.style.position = 'absolute';
+    gridCanvas.style.top = '0';
+    gridCanvas.style.left = '0';
+    gridCanvas.style.width = '100%';
+    gridCanvas.style.height = '100%';
+    gridCanvas.style.pointerEvents = 'none';
+    mapContainer.appendChild(gridCanvas);
     const ctx = gridCanvas.getContext('2d');
 
     const drawGrid = () => {
         const step = 50;
-        gridCanvas.width = mapContent.scrollWidth;
-        gridCanvas.height = mapContent.scrollHeight;
+        gridCanvas.width = mapContainer.offsetWidth;
+        gridCanvas.height = mapContainer.offsetHeight;
         ctx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
         ctx.strokeStyle = 'rgba(0,0,0,0.15)';
         ctx.lineWidth = 1;
@@ -67,8 +93,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    drawGrid();
     window.addEventListener('resize', drawGrid);
+    drawGrid();
+
+    // --- Инициализация положения pinpoint в центре с плавным перемещением ---
+    const centerPinpoint = () => {
+        const rect = pinpoint.getBoundingClientRect();
+        pinpoint.style.position = 'absolute';
+        // Плавный переход
+        pinpoint.style.transition = 'left 0.5s ease, top 0.5s ease';
+        pinpoint.style.left = `${window.innerWidth / 2 - rect.width / 2}px`;
+        pinpoint.style.top = `${window.innerHeight / 2 - rect.height / 2}px`;
+    };
+
+    // Вызываем при загрузке страницы с небольшой задержкой
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(centerPinpoint, 100); // чтобы элемент успел отрендериться
+    });
 
     // --- Pinpoint Drag & Click ---
     let isDragging = false, offsetX = 0, offsetY = 0;
@@ -78,22 +119,25 @@ document.addEventListener('DOMContentLoaded', () => {
         offsetX = e.clientX - pinpoint.offsetLeft;
         offsetY = e.clientY - pinpoint.offsetTop;
         pinpoint.setPointerCapture(e.pointerId);
-        pinpoint.style.cursor = 'grabbing';
+        // Отключаем переход во время перетаскивания
+        pinpoint.style.transition = 'none';
     });
 
     pinpoint.addEventListener('pointermove', e => {
-        if (!isDragging) return;
-        const x = e.clientX - offsetX;
-        const y = e.clientY - offsetY;
-        pinpoint.style.left = `${x}px`;
-        pinpoint.style.top = `${y}px`;
+        if (isDragging) {
+            const x = e.clientX - offsetX;
+            const y = e.clientY - offsetY;
+            pinpoint.style.left = x + 'px';
+            pinpoint.style.top = y + 'px';
+        }
     });
 
     pinpoint.addEventListener('pointerup', e => {
         if (isDragging) {
             isDragging = false;
-            pinpoint.style.cursor = 'grab';
             savePinpoint();
+            // Возвращаем плавность после завершения перетаскивания
+            pinpoint.style.transition = 'left 0.3s ease, top 0.3s ease';
         } else {
             // Ввод времени
             const input = document.createElement('input');
@@ -107,16 +151,27 @@ document.addEventListener('DOMContentLoaded', () => {
             input.addEventListener('change', () => {
                 mapState.time = input.value;
                 savePinpoint();
-                input.remove();
+                document.body.removeChild(input);
             });
-            input.addEventListener('blur', () => input.remove());
+            input.addEventListener('blur', () => {
+                if (document.body.contains(input)) document.body.removeChild(input);
+            });
         }
     });
 
-    // --- Button Back ---
-    let backTimer = null, longPress = false, scale = 1;
+    // --- Обновляем положение при изменении размеров окна ---
+    window.addEventListener('resize', centerPinpoint);
 
-    const resetBackBtn = () => { backBtn.style.transform = 'scale(1)'; scale = 1; };
+
+    // --- Button Back ---
+    let backTimer = null, longPress = false;
+    let scale = 1;
+
+    const resetBackBtn = () => {
+        backBtn.style.transition = 'transform 0.2s ease';
+        backBtn.style.transform = 'scale(1)';
+        scale = 1;
+    };
 
     backBtn.addEventListener('pointerdown', () => {
         longPress = false;
@@ -124,24 +179,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
         backTimer = setTimeout(() => {
             longPress = true;
-            let elapsed = 0;
-            const interval = setInterval(() => {
-                if (!longPress) return clearInterval(interval);
-                scale += 0.05;
+            let startTime = null;
+
+            const animateScale = (timestamp) => {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+
+                // плавное увеличение
+                scale = 1 + 0.01 * (elapsed / 200);
+                backBtn.style.transition = 'transform 0.1s ease';
                 backBtn.style.transform = `scale(${scale})`;
+
                 navigator.vibrate?.(30);
-                elapsed += 200;
-                if (elapsed >= 2000) {
-                    clearInterval(interval);
+
+                if (elapsed < 1000 && longPress) {
+                    requestAnimationFrame(animateScale);
+                } else if (elapsed >= 1000) {
                     window.location.href = previousPage;
                 }
-            }, 200);
+            };
+
+            requestAnimationFrame(animateScale);
         }, 500);
     });
 
     backBtn.addEventListener('pointerup', () => {
         clearTimeout(backTimer);
-        if (!longPress) navigator.vibrate?.(50);
+        longPress = false;
+        navigator.vibrate?.(50);
         resetBackBtn();
     });
 
@@ -164,7 +229,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.appendChild(overlay);
                 requestAnimationFrame(() => {
                     overlay.style.opacity = 1;
-                    setTimeout(() => window.location.href = '/main.html', 400);
+                    setTimeout(() => {
+                        window.location.href = '/main.html'; // изменить под секцию
+                    }, 400);
                 });
             }, 200);
         });

@@ -1,29 +1,32 @@
-.map-container {
+.map-container{
     width: 100%;
     height: 100%;
-    overflow: auto; /* можно скроллить карту */
+    overflow-x: scroll;
+    overflow-y: hidden;
     position: relative;
     background-color: white;
-    -webkit-user-select: none;
-    user-select: none;
-    touch-action: none;
 }
 
-.map {
+.map{
+    height: 100%;
+    aspect-ratio: .8;
     position: relative;
-    min-width: 800px; /* фиксируем минимальный размер, чтобы карта не сжималась */
-    min-height: 600px;
 }
 
-.map-blocks {
+.map img{
+    height: 100%;
+}
+
+.map-blocks{
+    height: 100%;
+    box-sizing: border-box;
     display: grid;
     gap: 50px;
-    padding: 50px 60px;
+    padding: 50px 0 50px 60px;
     grid-template-columns: 2fr 1fr 2fr;
-    position: relative; /* для сетки и pin */
 }
 
-.section {
+.section{
     background-color: white;
     border-radius: var(--radius-big);
     box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.44);
@@ -31,10 +34,9 @@
     color: black;
     padding: 25px;
     box-sizing: border-box;
-    user-select: none;
 }
 
-.assigned {
+.assigned{
     outline: solid 3px var(--main-color);
     box-shadow: none;
 }
@@ -82,35 +84,25 @@
     border-bottom-right-radius: 0;
 }
 
-.btn-back {
+.btn-back{
     position: fixed;
+    top: auto;
     bottom: 35px;
+    left: auto;
     right: 25px;
     background-color: var(--main-color);
     padding: 10px 20px;
     font-size: 1.2rem;
     border-radius: var(--radius-big);
     color: black;
-    transition: .2s ease;
-    user-select: none;
-    touch-action: none;
+    transition: .1s ease;
 }
 
-.pinpoint {
+.pinpoint{
+    position: absolute;
+    z-index: 100;
     width: 30px;
     height: 30px;
     background-color: var(--main-color);
-    border-radius: 50%;
-    position: absolute; /* важно для перетаскивания */
-    cursor: grab;
-    z-index: 10;
-    touch-action: none;
-}
-
-.grid-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    z-index: 5;
+    border-radius: 100px;
 }
