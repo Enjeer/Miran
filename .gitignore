@@ -1,0 +1,35 @@
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# Build output
+dist/
+build/
+.cache/
+.temp/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE and system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Render / deployment cache
+.render-cache/
+.vercel/
+.netlify/
