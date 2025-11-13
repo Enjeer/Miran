@@ -4,51 +4,48 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware для статических файлов
-app.use(express.static(path.join(__dirname, 'public')));
+const publicDir = path.join(__dirname, 'public');
 
-// Special handling for PWA files
+// Раздача статических файлов
+app.use(express.static(publicDir));
+
+// PWA файлы
 app.get('/manifest.json', (req, res) => {
   res.setHeader('Content-Type', 'application/manifest+json');
-  res.sendFile(path.join(__dirname, 'manifest.json'));
+  res.sendFile(path.join(publicDir, 'manifest.json'));
 });
 
 app.get('/sw.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
-  res.sendFile(path.join(__dirname, 'sw.js'));
+  res.sendFile(path.join(publicDir, 'sw.js'));
 });
 
-// API routes для будущего функционала
+// API для проверки
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', service: 'PIB PWA', timestamp: new Date().toISOString() });
 });
 
-// SPA routing - все остальные пути ведут на index.html
+// SPA fallback
 app.get('*', (req, res) => {
-  const requestPath = req.path;
-  
-  // Определяем какой файл отдавать
   let fileToServe = 'index.html';
-  
-  if (requestPath === '/auth' || requestPath === '/auth.html') {
+
+  if (req.path === '/auth' || req.path === '/auth.html') {
     fileToServe = 'auth.html';
-  } else if (requestPath === '/main' || requestPath === '/main.html') {
+  } else if (req.path === '/main' || req.path === '/main.html') {
     fileToServe = 'main.html';
-  } else if (requestPath === '/map' || requestPath === '/map.html') {
+  } else if (req.path === '/map' || req.path === '/map.html') {
     fileToServe = 'map.html';
-  } else if (requestPath !== '/' && requestPath !== '/index.html') {
-    // Проверяем существует ли запрашиваемый файл
-    const filePath = path.join(__dirname, requestPath);
+  } else {
+    const filePath = path.join(publicDir, req.path);
     if (fs.existsSync(filePath)) {
       return res.sendFile(filePath);
     }
   }
-  
-  res.sendFile(path.join(__dirname, fileToServe));
+
+  res.sendFile(path.join(publicDir, fileToServe));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 PIB PWA Server running on port ${PORT}`);
   console.log(`📱 Local: http://localhost:${PORT}`);
-  console.log(`🌐 Network: http://0.0.0.0:${PORT}`);
 });
