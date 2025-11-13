@@ -1,9 +1,9 @@
 class Navigation {
     constructor() {
         this.navItems = [
-            { id: 'nav-home', path: '/main', icon: 'home', label: 'Главная' },
+            { id: 'nav-home', path: '/graphs', icon: 'stats', label: 'Статистика' },
             { id: 'nav-chat', path: '/chat', icon: 'chat', label: 'Чат' },
-            { id: 'nav-map', path: '/map', icon: 'map', label: 'Карта' },
+            { id: 'nav-map', path: '/map', icon: 'chat', label: 'Чат' },
             { id: 'nav-profile', path: '/profile', icon: 'profile', label: 'Профиль' }
         ];
     }
