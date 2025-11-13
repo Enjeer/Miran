@@ -88,6 +88,11 @@ if (window.location.pathname.includes('chat.html')) {
     const chatPage = new ChatPage();
 }
 
+if (window.location.pathname.includes('inspection.html')) {
+    console.log('Initializing ChatPage for inspection.html');
+    const inspectionPage = new InspectionPage();
+}
+
 
 // Проверяем авторизацию при загрузке
 document.addEventListener('DOMContentLoaded', () => {

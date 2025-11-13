@@ -40,8 +40,8 @@ app.get('*', (req, res) => {
         fileToServe = 'map.html';
     } else if (requestPath === '/chat' || requestPath === '/chat.html') {
         fileToServe = 'chat.html';
-    } else if (requestPath === '/profile' || requestPath === '/profile.html') {
-        fileToServe = 'profile.html';
+    } else if (requestPath === '/inspection' || requestPath === '/inspection.html') {
+        fileToServe = 'inspection.html';
     } else {
         // Проверяем, существует ли физический файл в публичной папке
         const filePath = path.join(publicDir, requestPath);

@@ -5,7 +5,8 @@ class PIBRouter {
             '/auth': 'auth', 
             '/main': 'main',
             '/chat': 'chat',
-            '/map': 'map'
+            '/map': 'map',
+            '/inspection': 'inspection'
         };
         
         this.init();
@@ -149,6 +150,8 @@ class PIBRouter {
             window.location.href = 'chat.html';
         } else if (path === '/map') {
             window.location.href = 'map.html';
+        } else if (path === '/inspection') {
+            window.location.href = 'inspection.html';
         } else {
             window.location.href = 'index.html';
         }

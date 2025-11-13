@@ -213,10 +213,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Sections Click ---
     sections.forEach(section => {
         section.addEventListener('click', () => {
+            const sectionName = section.textContent.trim(); // Получаем A1, B2 и т.д.
+            localStorage.setItem('selectedSection', sectionName);
+
             section.style.transition = 'transform 0.2s';
             section.style.transform = 'scale(1.1)';
             setTimeout(() => {
                 section.style.transform = 'scale(1)';
+
                 const overlay = document.createElement('div');
                 overlay.style.position = 'fixed';
                 overlay.style.top = 0;
@@ -227,13 +231,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 overlay.style.opacity = 0;
                 overlay.style.transition = 'opacity 0.4s';
                 document.body.appendChild(overlay);
+
                 requestAnimationFrame(() => {
                     overlay.style.opacity = 1;
                     setTimeout(() => {
-                        window.location.href = '/main.html'; // изменить под секцию
+                        window.location.href = '/inspection.html';
                     }, 400);
                 });
             }, 200);
         });
     });
+
 });

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIB - Чат</title>
+    <meta name="theme-color" content="#515558">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="inspection-page">
+    <div class="inspection-container">
+        <div class="inspection">
+            <div class="header">
+                <span>Инспекция секции</span>
+                <button class="help"><img src="/media/images/icons/question-small-svgrepo-com.svg" alt=""></button>
+            </div>
+            <div class="section-naming">
+                <span>Секция B2</span>
+            </div>
+            <div class="section-inner">
+                <div class="workplace checked top">
+                    <div></div>
+                </div>
+                <div class="workplace checked mid">
+                    <div></div>
+                </div>
+                <div class="workplace checked low">
+                    <div></div>
+                </div>
+                <div class="workplace">
+                    <div></div>
+                </div>
+                <div class="workplace">
+                    <div></div>
+                </div>
+                <div class="workplace">
+                    <div></div>
+                </div>
+                <div class="workplace">
+                    <div></div>
+                </div>
+                <div class="workplace">
+                    <div></div>
+                </div>
+                <div class="workplace">
+                    <div></div>
+                </div>
+                <div class="workplace">
+                    <div></div>
+                </div>
+                <div class="workplace">
+                    <div></div>
+                </div>
+            </div>
+        </div>
+        <div class="buttons">
+            <div class="btn-finish"><span>Завершить</span></div>
+            <div class="btn-back"><span>Назад (зажать)</span></div>
+        </div>
+        <!-- Popup для workplace -->
+        <div class="popup-overlay popup-workplace" style="display: none;">
+            <div class="popup">
+                <p>Это popup для workplace</p>
+                <button class="popup-cancel">Отмена</button>
+            </div>
+        </div>
+
+        <!-- Popup для кнопки Завершить -->
+        <div class="popup-overlay popup-finish" style="display: none;">
+            <div class="popup">
+                <p>Это popup для завершения</p>
+                <button class="popup-cancel">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/router.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/inspection.js"></script>
+</body>
+</html>
