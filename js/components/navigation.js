@@ -1,81 +1,64 @@
 class Navigation {
-    constructor(containerId = 'nav-container') {
-        this.containerId = containerId;
-        this.buttons = [
-            { id: 'btn-stats', icon: '/media/images/icons/stats.png', text: 'Статистика', route: '/stats' },
-            { id: 'btn-inspect', icon: '/media/images/icons/glass.png', text: 'Инспекция', route: '/inspect' },
-            { id: 'btn-chat', icon: '/media/images/icons/chat.png', text: 'Чат', route: '/chat' },
-            { id: 'btn-profile', icon: '/media/images/icons/profile.png', text: 'Аккаунт', route: '/profile' }
+    constructor() {
+        this.navItems = [
+            { id: 'nav-home', path: '/main', icon: 'home', label: 'Главная' },
+            { id: 'nav-chat', path: '/chat', icon: 'chat', label: 'Чат' },
+            { id: 'nav-map', path: '/map', icon: 'map', label: 'Карта' },
+            { id: 'nav-profile', path: '/profile', icon: 'profile', label: 'Профиль' }
         ];
     }
-    
 
     render() {
-        const container = document.getElementById(this.containerId);
-        if (!container) {
-            console.warn('Navigation: контейнер не найден, пробую создать вручную');
-            const newContainer = document.createElement('div');
-            newContainer.id = this.containerId;
-            document.body.appendChild(newContainer);
-            this.render();
-            return;
-        }
+        const navContainer = document.getElementById('nav-container');
+        if (!navContainer) return;
 
-        container.innerHTML = this.getHTML();
-        this.attachEventListeners();
-    }
-
-    getHTML() {
-        return `
+        navContainer.innerHTML = `
             <nav class="bottom-nav">
-                ${this.buttons.map(btn => `
-                    <button class="nav-btn" id="${btn.id}" data-route="${btn.route}">
-                        <img class="nav-icon" src="${btn.icon}"></img>
-                        <span class="nav-text">${btn.text}</span>
-                    </button>
+                ${this.navItems.map(item => `
+                    <div class="nav-item" id="${item.id}">
+                        <img src="/media/images/icons/${item.icon}.png" alt="${item.label}">
+                        <span>${item.label}</span>
+                    </div>
                 `).join('')}
             </nav>
         `;
+
+        this.attachEventListeners();
     }
 
     attachEventListeners() {
-        this.buttons.forEach(btn => {
-            const button = document.getElementById(btn.id);
-            if (button) {
-                button.addEventListener('click', () => {
-                    this.handleNavigation(btn.route);
+        this.navItems.forEach(item => {
+            const navElement = document.getElementById(item.id);
+            if (navElement) {
+                navElement.addEventListener('click', () => {
+                    this.navigateTo(item.path);
                 });
             }
         });
     }
 
-    handleNavigation(route) {
-        // Обновляем активную кнопку
-        this.setActiveButton(route);
-        
-        // Навигация через роутер
-        if (window.router) {
-            window.router.navigateTo(route);
-        } else {
-            window.location.href = route + '.html';
+    navigateTo(path) {
+        if (path === '/main') {
+            window.location.href = 'main.html';
+        } else if (path === '/chat') {
+            window.location.href = 'chat.html';
+        } else if (path === '/map') {
+            window.location.href = 'map.html';
+        } else if (path === '/profile') {
+            window.location.href = 'profile.html';
         }
     }
 
-    setActiveButton(activeRoute) {
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.getAttribute('data-route') === activeRoute) {
-                btn.classList.add('active');
-            }
-        });
-    }
-
-    // Автоматически устанавливаем активную кнопку при загрузке
     setCurrentActive() {
         const currentPath = window.location.pathname;
-        this.buttons.forEach(btn => {
-            if (currentPath.includes(btn.route.replace('/', ''))) {
-                this.setActiveButton(btn.route);
+        this.navItems.forEach(item => {
+            const navElement = document.getElementById(item.id);
+            if (navElement) {
+                if (currentPath.includes(item.path.replace('/', ''))) {
+                    navElement.classList.add('active');
+                } else {
+                    navElement.classList.remove('active');
+                }
             }
         });
     }
