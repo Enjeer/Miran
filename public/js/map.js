@@ -2,50 +2,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const backBtn = document.querySelector('.btn-back');
     const sections = document.querySelectorAll('.section');
     const pinpoint = document.querySelector('.pinpoint');
-    const mapContainer = document.querySelector('.map');
+    const mapContainer = document.querySelector('.map-container');
 
-    // 📌 Предотвращаем выделение текста и масштабирование
-    document.body.style.userSelect = 'none';
-    document.body.style.touchAction = 'none';
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('gesturestart', e => e.preventDefault());
-
-    // --- PWA ---
-    let deferredPrompt;
-    const installBtnContainer = document.getElementById('installButton');
-    if (installBtnContainer) {
-        const installBtn = installBtnContainer.querySelector('button');
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installBtnContainer.style.display = 'block';
-        });
-        installBtn.addEventListener('click', async () => {
-            installBtnContainer.style.display = 'none';
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                await deferredPrompt.userChoice;
-                deferredPrompt = null;
-            }
-        });
-    }
-
-    // --- Previous Page ---
-    let previousPage = document.referrer || '/main.html';
+    // --- Отключаем выделение, контекстное меню, жесты ---
+    mapContainer.style.userSelect = 'none';
+    mapContainer.style.touchAction = 'none';
+    mapContainer.addEventListener('contextmenu', e => e.preventDefault());
+    mapContainer.addEventListener('gesturestart', e => e.preventDefault());
 
     // --- Map State ---
     const mapState = { pinpointX: null, pinpointY: null, time: '' };
 
-    // --- Pinpoint Setup ---
     const loadPinpoint = () => {
         const saved = JSON.parse(sessionStorage.getItem('mapState'));
         if (saved) Object.assign(mapState, saved);
 
         if (mapState.pinpointX === null || mapState.pinpointY === null) {
-            // Если нет позиции, ставим в центр
-            const rect = mapContainer.getBoundingClientRect();
-            pinpoint.style.left = rect.width / 2 - pinpoint.offsetWidth / 2 + 'px';
-            pinpoint.style.top = rect.height / 2 - pinpoint.offsetHeight / 2 + 'px';
+            // Центр относительно scrollable контейнера
+            pinpoint.style.left = (mapContainer.scrollLeft + mapContainer.clientWidth / 2 - pinpoint.offsetWidth/2) + 'px';
+            pinpoint.style.top = (mapContainer.scrollTop + mapContainer.clientHeight / 2 - pinpoint.offsetHeight/2) + 'px';
         } else {
             pinpoint.style.left = mapState.pinpointX + 'px';
             pinpoint.style.top = mapState.pinpointY + 'px';
@@ -53,28 +28,26 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const savePinpoint = () => {
-        mapState.pinpointX = parseInt(pinpoint.style.left) || 0;
-        mapState.pinpointY = parseInt(pinpoint.style.top) || 0;
+        mapState.pinpointX = parseInt(pinpoint.style.left);
+        mapState.pinpointY = parseInt(pinpoint.style.top);
         sessionStorage.setItem('mapState', JSON.stringify(mapState));
     };
 
     loadPinpoint();
 
-    // --- Grid Overlay ---
+    // --- Grid Canvas для всего scrollable контента ---
     const gridCanvas = document.createElement('canvas');
     gridCanvas.style.position = 'absolute';
     gridCanvas.style.top = '0';
     gridCanvas.style.left = '0';
-    gridCanvas.style.width = '100%';
-    gridCanvas.style.height = '100%';
     gridCanvas.style.pointerEvents = 'none';
     mapContainer.appendChild(gridCanvas);
     const ctx = gridCanvas.getContext('2d');
 
     const drawGrid = () => {
         const step = 50;
-        gridCanvas.width = mapContainer.offsetWidth;
-        gridCanvas.height = mapContainer.offsetHeight;
+        gridCanvas.width = mapContainer.scrollWidth;
+        gridCanvas.height = mapContainer.scrollHeight;
         ctx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
         ctx.strokeStyle = 'rgba(0,0,0,0.15)';
         ctx.lineWidth = 1;
@@ -93,33 +66,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    window.addEventListener('resize', drawGrid);
     drawGrid();
+    window.addEventListener('resize', drawGrid);
 
-    // --- Pinpoint Drag & Click ---
+    // --- Pinpoint Drag ---
     let isDragging = false, offsetX = 0, offsetY = 0;
+
     pinpoint.addEventListener('pointerdown', e => {
         isDragging = true;
         offsetX = e.clientX - pinpoint.offsetLeft;
         offsetY = e.clientY - pinpoint.offsetTop;
+
+        // блокируем скролл контейнера на время drag
+        mapContainer.style.overflow = 'hidden';
         pinpoint.setPointerCapture(e.pointerId);
     });
 
     pinpoint.addEventListener('pointermove', e => {
-        if (isDragging) {
-            const x = e.clientX - offsetX;
-            const y = e.clientY - offsetY;
-            pinpoint.style.left = x + 'px';
-            pinpoint.style.top = y + 'px';
-        }
+        if (!isDragging) return;
+        const x = e.clientX - offsetX;
+        const y = e.clientY - offsetY;
+        pinpoint.style.left = x + 'px';
+        pinpoint.style.top = y + 'px';
     });
 
     pinpoint.addEventListener('pointerup', e => {
         if (isDragging) {
             isDragging = false;
+            mapContainer.style.overflow = 'scroll';
             savePinpoint();
         } else {
-            // Ввод времени
+            // ввод времени
             const input = document.createElement('input');
             input.type = 'time';
             input.value = mapState.time || '';
@@ -160,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 elapsed += 200;
                 if (elapsed >= 1000) {
                     clearInterval(interval);
-                    window.location.href = previousPage;
+                    window.location.href = document.referrer || '/main.html';
                 }
             }, 200);
         }, 500);
@@ -192,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 requestAnimationFrame(() => {
                     overlay.style.opacity = 1;
                     setTimeout(() => {
-                        window.location.href = '/main.html'; // изменить под секцию
+                        window.location.href = '/main.html';
                     }, 400);
                 });
             }, 200);
