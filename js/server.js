@@ -1,12 +1,14 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
-const publicDir = path.join(__dirname, 'public');
+// 📁 Папка с публичными файлами (корень проекта)
+const publicDir = path.join(__dirname, '..');
 
-// Раздача статических файлов
+// Раздача статики (css, js, media и т.д.)
 app.use(express.static(publicDir));
 
 // PWA файлы
@@ -25,18 +27,22 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', service: 'PIB PWA', timestamp: new Date().toISOString() });
 });
 
-// SPA fallback
+// SPA fallback: отдаём соответствующие HTML или index.html
 app.get('*', (req, res) => {
+  const requestPath = req.path;
+
+  // Определяем какой файл отдавать
   let fileToServe = 'index.html';
 
-  if (req.path === '/auth' || req.path === '/auth.html') {
+  if (requestPath === '/auth' || requestPath === '/auth.html') {
     fileToServe = 'auth.html';
-  } else if (req.path === '/main' || req.path === '/main.html') {
+  } else if (requestPath === '/main' || requestPath === '/main.html') {
     fileToServe = 'main.html';
-  } else if (req.path === '/map' || req.path === '/map.html') {
+  } else if (requestPath === '/map' || requestPath === '/map.html') {
     fileToServe = 'map.html';
   } else {
-    const filePath = path.join(publicDir, req.path);
+    // Проверяем, существует ли физический файл в публичной папке
+    const filePath = path.join(publicDir, requestPath);
     if (fs.existsSync(filePath)) {
       return res.sendFile(filePath);
     }
