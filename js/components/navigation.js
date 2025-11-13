@@ -12,7 +12,14 @@ class Navigation {
 
     render() {
         const container = document.getElementById(this.containerId);
-        if (!container) return;
+        if (!container) {
+            console.warn('Navigation: контейнер не найден, пробую создать вручную');
+            const newContainer = document.createElement('div');
+            newContainer.id = this.containerId;
+            document.body.appendChild(newContainer);
+            this.render();
+            return;
+        }
 
         container.innerHTML = this.getHTML();
         this.attachEventListeners();
