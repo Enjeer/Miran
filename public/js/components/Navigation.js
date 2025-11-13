@@ -16,7 +16,7 @@ class Navigation {
             <nav class="bottom-nav">
                 ${this.navItems.map(item => `
                     <div class="nav-item" id="${item.id}">
-                        <img src="/media/images/icons/${item.icon}.png" alt="${item.label}">
+                        <img class="nav-icon" src="/media/images/icons/${item.icon}.png" alt="${item.label}">
                         <span>${item.label}</span>
                     </div>
                 `).join('')}
