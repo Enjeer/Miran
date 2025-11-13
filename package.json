@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Production Inspection Bot PWA",
   "scripts": {
-    "start": "npx http-server -p $PORT -a 0.0.0.0 --cors",
-    "build": "echo 'No build needed'"
+    "start": "node server.js"
   },
   "dependencies": {
     "http-server": "^14.0.0"
