@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Production Inspection Bot PWA",
   "scripts": {
-    "start": "node server.js"
+    "start": "node js/server.js"
   },
   "dependencies": {
     "http-server": "^14.0.0"
