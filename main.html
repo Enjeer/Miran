@@ -67,19 +67,11 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
     <script src="js/components/Navigation.js"></script>
 
     <script>
-    (function initNav() {
-        const startNav = () => {
+        document.addEventListener('DOMContentLoaded', () => {
             const nav = new Navigation();
             nav.render();
             nav.setCurrentActive();
-        };
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', startNav);
-        } else {
-            startNav();
-        }
-    })();
+        });
     </script>
 
 </body>
