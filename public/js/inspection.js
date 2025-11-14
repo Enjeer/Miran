@@ -22,6 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const workplaces = document.querySelectorAll('.section-inner .workplace');
 
+    const sectionName = document.querySelector('.section-naming');
+    const headerName = sectionName.querySelector('span');
+
+    headerName.innerHTML = localStorage.getItem('selectedSection');
+    localStorage.removeItem('selectedSection');
+    
+
     // ==========================
     // Настройки шагов
     // ==========================
