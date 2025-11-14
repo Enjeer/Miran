@@ -99,10 +99,5 @@
 }
 
 .pinpoint{
-    position: absolute;
-    z-index: 100;
-    width: 30px;
-    height: 30px;
-    background-color: var(--main-color);
-    border-radius: 100px;
+    display: none;
 }
