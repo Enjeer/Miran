@@ -1,86 +1,166 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const backBtn = document.querySelector('.btn-back');
-    const finishBtn = document.querySelector('.btn-finish');
-    const workplaces = document.querySelectorAll('.section-inner .workplace');
 
     const popupWorkplace = document.querySelector('.popup-workplace');
-    const popupFinish = document.querySelector('.popup-finish');
+    const popupCompare = document.querySelector('.popup-compare');
+    const popupViolation = document.querySelector('.popup-violation');
 
-    // --- Показать/скрыть popup ---
-    const showPopup = (popup) => {
-        if (popup) popup.style.display = 'flex';
-    };
-    const hidePopup = (popup) => {
-        if (popup) popup.style.display = 'none';
-    };
+    const btnCompareClose = document.querySelector('.popup-compare-close');
+    const btnNext = document.querySelector('.popup-compare-next');
+    const btnViolation = document.querySelector('.popup-compare-log');
 
-    // --- Popup на workplace ---
-    workplaces.forEach(wp => {
-        wp.addEventListener('click', () => showPopup(popupWorkplace));
-    });
+    const imgEth = document.querySelector('.img-eth');
+    const direction = document.querySelector('.directions');
+    const dots = document.querySelectorAll('.dot');
 
-    // --- Popup на кнопку завершить ---
-    if (finishBtn) {
-        finishBtn.addEventListener('click', () => showPopup(popupFinish));
-    }
+    const violationComment = document.querySelector('.violation-comment');
+    const violationBtns = document.querySelectorAll('.violation-grid button');
+    const violationPhotoBtn = document.querySelector('.violation-photo-btn');
+    const violationPhotoInput = document.querySelector('.violation-photo-input');
+    const violationSubmit = document.querySelector('.violation-submit');
 
-    // --- Кнопки Отмена ---
-    document.querySelectorAll('.popup-cancel').forEach(btn => {
-        btn.addEventListener('click', () => {
-            hidePopup(btn.closest('.popup-overlay'));
+    const workplaces = document.querySelectorAll('.section-inner .workplace');
+
+    // Открытие сравнения теперь привязано к workplace
+    workplaces.forEach((wp, index) => {
+        wp.addEventListener("click", () => {
+            hidePopup(popupWorkplace); // если открыт
+            currentStep = 0;
+            updateSlide();
+            showPopup(popupCompare);
         });
     });
 
-    // --- Back button ---
-    let backTimer = null, longPress = false;
-    let scale = 1;
 
-    const resetBackBtn = () => {
-        backBtn.style.transition = 'transform 0.2s ease';
-        backBtn.style.transform = 'scale(1)';
-        scale = 1;
-    };
+    // ==========================
+    // Слайды
+    // ==========================
 
-    backBtn.addEventListener('pointerdown', () => {
-        longPress = false;
-        navigator.vibrate?.(50);
+    const TOTAL_STEPS = 2;
+    let currentStep = 0;
 
-        backTimer = setTimeout(() => {
-            longPress = true;
-            let startTime = null;
+    const stepsData = Array(TOTAL_STEPS).fill(null).map(() => ({
+        ok: true,
+        comment: "",
+        photo: null
+    }));
 
-            const animateScale = (timestamp) => {
-                if (!startTime) startTime = timestamp;
-                const elapsed = timestamp - startTime;
+    const images = [
+        "/media/images/static/ethalon-front.png",
+        "/media/images/static/ethalon-bottom-left.png",
+    ];
 
-                scale = 1 + 0.01 * (elapsed / 200);
-                backBtn.style.transition = 'transform 0.1s ease';
-                backBtn.style.transform = `scale(${scale})`;
+    const directions = [
+        "/media/images/static/bottom.png",
+        "/media/images/static/bottom-left.png",
+    ];
 
-                navigator.vibrate?.(30);
+    function updateSlide() {
+        imgEth.style.backgroundImage = `url(${images[currentStep]})`;
+        direction.style.backgroundImage = `url(${directions[currentStep]})`;
 
-                if (elapsed < 1000 && longPress) {
-                    requestAnimationFrame(animateScale);
-                } else if (elapsed >= 1000) {
-                    window.location.href = document.referrer || '/main.html';
-                }
-            };
 
-            requestAnimationFrame(animateScale);
-        }, 500);
-    });
-
-    backBtn.addEventListener('pointerup', () => {
-        clearTimeout(backTimer);
-        longPress = false;
-        navigator.vibrate?.(50);
-        resetBackBtn();
-    });
-
-    // --- Подтягиваем название секции ---
-    const sectionName = localStorage.getItem('selectedSection') || 'Секция';
-    const sectionSpan = document.querySelector('.section-naming span');
-    if (sectionSpan) {
-        sectionSpan.textContent = `Зона ${sectionName}`;
+        dots.forEach((d, i) => {
+            d.classList.toggle("active", i === currentStep);
+        });
     }
+
+
+    // ==========================
+    // Кнопка "Все норм"
+    // ==========================
+
+    if (btnNext) {
+        btnNext.addEventListener('click', () => {
+            stepsData[currentStep].ok = true;
+            goNextStep();
+        });
+    }
+
+
+    // ==========================
+    // Кнопка "Есть нарушение"
+    // ==========================
+
+    if (btnViolation) {
+        btnViolation.addEventListener('click', () => {
+            stepsData[currentStep].ok = false;
+            violationComment.value = "";
+            showPopup(popupViolation);
+        });
+    }
+
+
+    // ==========================
+    // Теги в комментарий
+    // ==========================
+
+    violationBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            violationComment.value += btn.dataset.tag + ". ";
+        });
+    });
+
+
+    // ==========================
+    // Фото
+    // ==========================
+
+    if (violationPhotoBtn) {
+        violationPhotoBtn.addEventListener("click", () => {
+            violationPhotoInput.click();
+        });
+    }
+
+    violationPhotoInput.addEventListener("change", (e) => {
+        stepsData[currentStep].photo = e.target.files[0] || null;
+    });
+
+
+    // ==========================
+    // Завершить нарушение
+    // ==========================
+
+    violationSubmit.addEventListener("click", () => {
+        stepsData[currentStep].comment = violationComment.value.trim();
+        hidePopup(popupViolation);
+        goNextStep();
+    });
+
+
+    // ==========================
+    // Переход к следующему этапу
+    // ==========================
+
+    function goNextStep() {
+        currentStep++;
+
+        if (currentStep < TOTAL_STEPS) {
+            updateSlide();
+            return;
+        }
+
+        // Завершено!
+        hidePopup(popupCompare);
+        console.log("РЕЗУЛЬТАТ:", stepsData);
+    }
+
+
+    // ==========================
+    // Назад
+    // ==========================
+
+    if (btnCompareClose) {
+        btnCompareClose.addEventListener("click", () => {
+            hidePopup(popupCompare);
+        });
+    }
+
+
+    // ==========================
+    // Popup helpers
+    // ==========================
+
+    function showPopup(p) { if (p) p.style.display = "flex"; }
+    function hidePopup(p) { if (p) p.style.display = "none"; }
+
 });

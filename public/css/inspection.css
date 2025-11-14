@@ -56,14 +56,14 @@
 }
 
 .section-inner{
-    padding: 50px 8% 80px;
+    padding: 20px 2% 80px;
     width: 100%;
     height: 100%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(6, 1fr);
-    grid-column-gap: 60px;
-    grid-row-gap: 35px;
+    grid-column-gap: 30px;
+    grid-row-gap: 15px;
 }
 
 .section-inner div:nth-child(1) { grid-area: 1 / 1 / 2 / 2; }
@@ -127,8 +127,85 @@
     background-color: white;
     border-radius: var(--radius-small);
     width: 80%;
-    height: 80%;
     padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 35px;
+    color: black;
+}
+
+.popup-compare-content{
+    background-color: white;
+    border-radius: var(--radius-small);
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0px;
+    color: black;
+}
+
+.popup div{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.popup button{
+    width: 100%;
+    padding: 15px 25px;
+    background-color: black;
+    border: none;
+    border-radius: 100px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+}
+
+.popup button.popup-compare-next{
+    background-color: white;
+    color: black;
+}
+
+.img-eth{
+    width: 100%;
+    aspect-ratio: .9;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.directions{
+    width: 100%;
+    aspect-ratio: 1.6;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.popup-compare .buttons{
+    background-color: var(--secondary);
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    gap: 10px;
+}
+
+.compare-steps{
+    display: flex;
+}
+
+.popup-compare .buttons button{
+    padding: 10px;
+}
+
+.popup button img{
+    height: 20px;
 }
 
 .btn-finish{

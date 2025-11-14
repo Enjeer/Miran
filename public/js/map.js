@@ -164,50 +164,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Button Back ---
-    let backTimer = null, longPress = false;
-    let scale = 1;
-
-    const resetBackBtn = () => {
-        backBtn.style.transition = 'transform 0.2s ease';
-        backBtn.style.transform = 'scale(1)';
-        scale = 1;
-    };
-
-    backBtn.addEventListener('pointerdown', () => {
-        longPress = false;
-        navigator.vibrate?.(50);
-
-        backTimer = setTimeout(() => {
-            longPress = true;
-            let startTime = null;
-
-            const animateScale = (timestamp) => {
-                if (!startTime) startTime = timestamp;
-                const elapsed = timestamp - startTime;
-
-                // плавное увеличение
-                scale = 1 + 0.01 * (elapsed / 200);
-                backBtn.style.transition = 'transform 0.1s ease';
-                backBtn.style.transform = `scale(${scale})`;
-
-                navigator.vibrate?.(30);
-
-                if (elapsed < 1000 && longPress) {
-                    requestAnimationFrame(animateScale);
-                } else if (elapsed >= 1000) {
-                    window.location.href = previousPage;
-                }
-            };
-
-            requestAnimationFrame(animateScale);
-        }, 500);
-    });
-
-    backBtn.addEventListener('pointerup', () => {
-        clearTimeout(backTimer);
-        longPress = false;
-        navigator.vibrate?.(50);
-        resetBackBtn();
+    backBtn.addEventListener('click', () => {
+        window.location.href = document.referrer || '/main.html';;
     });
 
     // --- Sections Click ---

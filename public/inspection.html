@@ -56,13 +56,17 @@
         </div>
         <div class="buttons">
             <div class="btn-finish"><span>Завершить</span></div>
-            <div class="btn-back"><span>Назад (зажать)</span></div>
+            <div class="btn-back"><span>Назад</span></div>
         </div>
+
         <!-- Popup для workplace -->
         <div class="popup-overlay popup-workplace" style="display: none;">
             <div class="popup">
-                <p>Это popup для workplace</p>
-                <button class="popup-cancel">Отмена</button>
+                <p></p>
+                <div>
+                    <button class="popup-btn btn-compare">Сравнить с эталоном</button>
+                    <button class="popup-cancel">Отмена</button>
+                </div>
             </div>
         </div>
 
@@ -73,7 +77,73 @@
                 <button class="popup-cancel">Отмена</button>
             </div>
         </div>
-    </div>
+
+        <!-- ТРЕТИЙ попап — сравнение с эталоном -->
+        <div class="popup-overlay popup-compare" style="display: none;">
+            <div class="popup popup-compare-content">
+                <!-- Слайд с картинкой -->
+                <div class="img-eth"></div>
+
+                <!-- Нижние кнопки -->
+                <div class="buttons">
+                    
+                    <div class="directions"></div>
+
+                    <button class="popup-compare-next">
+                        <span>Все в норме</span>
+                        <img src="/media/images/icons/in_order.png" alt="">
+                    </button>
+
+                    <button class="popup-compare-log">
+                        <span>Есть нарушение</span>
+                        <img src="/media/images/icons/not_in_order.png" alt="">
+                    </button>
+
+                    <button class="popup-compare-close">Назад</button>
+                    <!-- Индикаторы -->
+                    <div class="compare-steps">
+                        <span class="dot active"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup-overlay popup-violation" style="display:none;">
+            <div class="popup popup-violation-content">
+
+                <h2>Фиксация нарушения</h2>
+
+                <textarea class="violation-comment" placeholder="Комментарий..."></textarea>
+
+                <!-- Быстрые кнопки -->
+                <div class="violation-grid">
+                    <button data-tag="Плохая уборка">Плохая уборка</button>
+                    <button data-tag="Сломано">Сломано</button>
+                    <button data-tag="Нет инструмента">Нет инструмента</button>
+                    <button data-tag="Перегрев">Перегрев</button>
+                    <button data-tag="Шум">Шум</button>
+                    <button data-tag="Опасная зона">Опасная зона</button>
+                </div>
+
+                <!-- Фото -->
+                <button class="violation-photo-btn">Сделать фото</button>
+                <input type="file" accept="image/*" capture="environment" class="violation-photo-input" style="display:none;">
+
+                <!-- Завершить -->
+                <button class="violation-submit">Завершить</button>
+
+                <!-- Отмена -->
+                <button class="violation-cancel popup-cancel">Отмена</button>
+
+            </div>
+        </div>
+
+
 
     <script src="js/router.js"></script>
     <script src="js/app.js"></script>
