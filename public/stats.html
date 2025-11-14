@@ -12,24 +12,27 @@
     <div class="stats-container">
         <div class="header"></div>
         <div class="blocks">
-            <div class="trends">
+            <div class="stats">
                 <!-- Контролы для выбора -->
                 <div class="trend-controls">
-                    <label>Выберите день: <input type="date" id="trend-day-picker"></label>
+                    <label>Дата: <input type="date" id="trend-day-picker"></label>
                     <button id="trend-day-btn">День</button>
                     <button id="trend-month-btn">Месяц</button>
                     <button id="trend-year-btn">Год</button>
                 </div>
 
                 <!-- Графики -->
-                <canvas id="chart-day" width="400" height="200"></canvas>
-                <canvas id="chart-month" width="400" height="200" style="display:none;"></canvas>
-                <canvas id="chart-year" width="400" height="200" style="display:none;"></canvas>
+                <canvas id="chart-day"></canvas>
+                <canvas id="chart-month"style="display:none;"></canvas>
+                <canvas id="chart-year"style="display:none;"></canvas>
             </div>
-            <div class="top"></div>
-            <div class="heat"></div>
-            <div class="perform"></div>
+            <div class="stats">
+                <h3>Топ нарушений по участкам</h3>
+                <canvas id="chart-top"></canvas>
+            </div>
         </div>
+        
+        <div class="btn-back"><span>Назад</span></div>
     </div>
 
     <!-- Chart.js -->

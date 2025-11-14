@@ -14,12 +14,15 @@
 /* === Блоки внутри .blocks === */
 .blocks {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 20px;
+    width: 100%;
+    padding-bottom: 80px;
 }
 
 /* === Тренды === */
-.trends {
+.stats {
+    width: 100%;
     grid-column: 1 / -1;
     background: #383838;
     padding: 20px;
@@ -50,7 +53,7 @@
     padding: 6px 12px;
     border: none;
     border-radius: 5px;
-    background-color: #4caf50;
+    background-color: var(--main-color);
     color: #fff;
     cursor: pointer;
     font-weight: bold;
@@ -58,11 +61,12 @@
 }
 
 .trend-controls button:hover {
-    background-color: #45a049;
+    background-color: var(--main-color);
 }
 
 /* === Canvas графиков === */
 canvas {
+    width: 100%;
     margin-top: 20px;
     background: #383838;
     border-radius: 10px;
@@ -70,11 +74,16 @@ canvas {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* === Остальные блоки === */
-.top, .heat, .perform {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    min-height: 150px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+.btn-back{
+    position: fixed;
+    top: auto;
+    bottom: 35px;
+    left: auto;
+    right: 25px;
+    background-color: var(--main-color);
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: var(--radius-big);
+    color: black;
+    transition: .1s ease;
 }
