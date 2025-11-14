@@ -4,7 +4,7 @@
     overflow-x: scroll;
     overflow-y: hidden;
     position: relative;
-    background-color: white;
+    background-color: white !important;
 }
 
 .map{
@@ -27,7 +27,7 @@
 }
 
 .section{
-    background-color: white;
+    background-color: white !important;
     border-radius: var(--radius-big);
     box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.44);
     border: solid 1px var(--secondary);
