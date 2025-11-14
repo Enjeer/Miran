@@ -180,6 +180,11 @@
     background-repeat: no-repeat;
 }
 
+.popup-violation-content{
+    height: 80% !important;
+    overflow-y: scroll !important;
+}
+
 .violation-grid{
     display: grid !important;
     grid-template-columns: 1fr 1fr ;
