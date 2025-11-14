@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIB - Чат</title>
+    <meta name="theme-color" content="#515558">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="stats-page">
+    <div class="stats-container">
+        <div class="header"></div>
+        <div class="blocks">
+            <div class="trends">
+                <!-- Контролы для выбора -->
+                <div class="trend-controls">
+                    <label>Выберите день: <input type="date" id="trend-day-picker"></label>
+                    <button id="trend-day-btn">День</button>
+                    <button id="trend-month-btn">Месяц</button>
+                    <button id="trend-year-btn">Год</button>
+                </div>
+
+                <!-- Графики -->
+                <canvas id="chart-day" width="400" height="200"></canvas>
+                <canvas id="chart-month" width="400" height="200" style="display:none;"></canvas>
+                <canvas id="chart-year" width="400" height="200" style="display:none;"></canvas>
+            </div>
+            <div class="top"></div>
+            <div class="heat"></div>
+            <div class="perform"></div>
+        </div>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Скрипты -->
+    <script src="js/router.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/stats.js"></script>
+</body>
+</html>

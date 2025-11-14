@@ -6,7 +6,8 @@ class PIBRouter {
             '/main': 'main',
             '/chat': 'chat',
             '/map': 'map',
-            '/inspection': 'inspection'
+            '/inspection': 'inspection',
+            '/stats': 'stats'
         };
         
         this.init();
@@ -23,7 +24,7 @@ class PIBRouter {
                 console.log('Start button found');
                 startButton.addEventListener('click', () => {
                     console.log('Start button clicked');
-                    this.navigateTo('/auth');
+                    this.navigateTo('/main');
                 });
             } else {
                 console.log('Start button NOT found');
@@ -152,6 +153,8 @@ class PIBRouter {
             window.location.href = 'map.html';
         } else if (path === '/inspection') {
             window.location.href = 'inspection.html';
+        } else if (path === '/stats') {
+            window.location.href = 'stats.html';
         } else {
             window.location.href = 'index.html';
         }

@@ -163,10 +163,33 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', centerPinpoint);
 
 
-    // --- Button Back ---
+    // --- История страниц ---
+    const pageHistory = JSON.parse(sessionStorage.getItem('pageHistory')) || [];
+
+    // Функция для перехода на страницу
+    function navigateTo(url) {
+        pageHistory.push(window.location.href); // сохраняем текущую страницу
+        sessionStorage.setItem('pageHistory', JSON.stringify(pageHistory));
+        window.location.href = url;
+    }
+
+    // Функция для "Назад"
+    function goBack() {
+        if (pageHistory.length > 0) {
+            const prev = pageHistory.pop();
+            sessionStorage.setItem('pageHistory', JSON.stringify(pageHistory));
+            window.location.href = prev;
+        } else {
+            // если истории нет — на главную
+            window.location.href = '/main.html';
+        }
+    }
+
+    // Пример использования
     backBtn.addEventListener('click', () => {
-        window.location.href = document.referrer || '/main.html';;
+        goBack();
     });
+
 
     // --- Sections Click ---
     sections.forEach(section => {

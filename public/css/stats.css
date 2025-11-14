@@ -1,0 +1,80 @@
+/* === Базовые стили страницы статистики === */
+.stats-page {
+    font-family: Arial, sans-serif;
+    background-color: var(--secondary);
+    color: var(--white);
+}
+
+.stats-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* === Блоки внутри .blocks === */
+.blocks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* === Тренды === */
+.trends {
+    grid-column: 1 / -1;
+    background: #383838;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.trend-controls {
+    display: flex;
+    flex-direction: column; /* столбец */
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.trend-controls label {
+    font-weight: bold;
+}
+
+.trend-controls input[type="date"] {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.trend-controls button {
+    width: 100%;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4caf50;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.trend-controls button:hover {
+    background-color: #45a049;
+}
+
+/* === Canvas графиков === */
+canvas {
+    margin-top: 20px;
+    background: #383838;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* === Остальные блоки === */
+.top, .heat, .perform {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    min-height: 150px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}

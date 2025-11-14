@@ -1,7 +1,7 @@
 class Navigation {
     constructor() {
         this.navItems = [
-            { id: 'nav-home', path: '/graphs', icon: 'stats', label: 'Статистика' },
+            { id: 'nav-home', path: '/stats', icon: 'stats', label: 'Статистика' },
             { id: 'nav-map', path: '/map', icon: 'glass', label: 'Инспекция' },
             { id: 'nav-chat', path: '/chat', icon: 'chat', label: 'Чат' },
             { id: 'nav-profile', path: '/profile', icon: 'profile', label: 'Профиль' }
@@ -38,8 +38,8 @@ class Navigation {
     }
 
     navigateTo(path) {
-        if (path === '/main') {
-            window.location.href = 'main.html';
+        if (path === '/stats') {
+            window.location.href = 'stats.html';
         } else if (path === '/chat') {
             window.location.href = 'chat.html';
         } else if (path === '/map') {

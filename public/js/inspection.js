@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCompareClose = document.querySelector('.popup-compare-close');
     const btnNext = document.querySelector('.popup-compare-next');
     const btnViolation = document.querySelector('.popup-compare-log');
+    const backBtn = document.querySelector('.btn-back');
 
     const imgEth = document.querySelector('.img-eth');
     const direction = document.querySelector('.directions');
@@ -178,5 +179,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================
     function showPopup(p) { if (p) p.style.display = "flex"; }
     function hidePopup(p) { if (p) p.style.display = "none"; }
+
+    backBtn.addEventListener('click', () => {
+        window.location.href = document.referrer || '/main.html';;
+    });
 
 });
