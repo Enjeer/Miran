@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerName = sectionName.querySelector('span');
 
     headerName.innerHTML = localStorage.getItem('selectedSection');
-    localStorage.removeItem('selectedSection');
     
 
     // ==========================
@@ -188,7 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function hidePopup(p) { if (p) p.style.display = "none"; }
 
     backBtn.addEventListener('click', () => {
-        window.location.href = document.referrer || '/main.html';;
+        window.location.href = document.referrer || '/main.html';
+        localStorage.removeItem('selectedSection');
     });
 
 });
