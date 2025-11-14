@@ -4,7 +4,7 @@ class ChatPage {
     this.input = document.getElementById("userInput");
     this.sendBtn = document.getElementById("sendButton");
     this.backBtn = document.querySelector('.btn-back');
-    this.apiKey = "c72690ed51af4420bdaf0855f32c3447";
+    this.apiKey = "2e260ef2f5d646159768c28daffb9172";
     this.model = "gpt-4o";
     this.init();
   }
